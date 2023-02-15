@@ -6,18 +6,29 @@ import {
   Link,
   Rating,
   Typography,
+  Box,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Product from "../products";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Box } from "@mui/system";
+import axios from "axios";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const [product, setProduct] = useState([]);
+  const [rating, setRating] = useState(0);
 
-  const product = Product.find((p) => p._id === id);
+  const fetchProduct = async () => {
+    const { data } = await axios.get(`/api/products/${id}`);
+    setProduct(data);
+    setRating(data.rating);
+  };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
+
   return (
     <>
       <Card
@@ -54,12 +65,7 @@ const ProductDetails = () => {
             gutterBottom
             mb={2}
           >
-            <Rating
-              name="read-only"
-              value={product.rating}
-              precision={0.5}
-              readOnly
-            />
+            <Rating name="read-only" value={rating} precision={0.5} readOnly />
             <Typography component="span">
               {product.numReviews} reviews
             </Typography>
