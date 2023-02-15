@@ -1,9 +1,20 @@
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import React from "react";
-import Products from "../products";
 import ProductScreen from "./ProductScreen";
+import axios from "axios";
 
 const HomeScreen = () => {
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const { data } = await axios.get("/api/products");
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -14,9 +25,10 @@ const HomeScreen = () => {
         marginTop: "1rem",
       }}
     >
-      {Products.map((product) => (
-        <ProductScreen key={product._id} product={product} />
-      ))}
+      {products &&
+        products.map((product) => (
+          <ProductScreen key={product._id} product={product} />
+        ))}
     </Box>
   );
 };

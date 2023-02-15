@@ -14,7 +14,7 @@ const ProductScreen = ({ product }) => {
     <Card sx={{ maxWidth: 305 }}>
       <Link href={`/product/${product._id}`} color="inherit" underline="none">
         <CardMedia
-          sx={{ height: 140 }}
+          sx={{ height: "300px", width: '100%' }}
           image={`${product.image}`}
           title={`${product.name}`}
         />
