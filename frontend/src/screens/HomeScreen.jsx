@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Box } from "@mui/material";
 import ProductScreen from "./ProductScreen";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/productAction";
+import Loader from "../components/Loader";
+import ErrorMessage from "../components/ErrorMessage";
 
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
-
-  const fetchProducts = async () => {
-    const { data } = await axios.get("/api/products");
-    setProducts(data);
-  };
-
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.productList);
+  const { loading, error, products } = data;
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <Box
@@ -25,6 +24,8 @@ const HomeScreen = () => {
         marginTop: "1rem",
       }}
     >
+      {loading && <Loader />}
+      {error && <ErrorMessage severity="error">{error}</ErrorMessage>}
       {products &&
         products.map((product) => (
           <ProductScreen key={product._id} product={product} />

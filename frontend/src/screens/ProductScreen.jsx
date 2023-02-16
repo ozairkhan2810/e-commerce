@@ -11,13 +11,13 @@ import {
 
 const ProductScreen = ({ product }) => {
   return (
-    <Card sx={{ maxWidth: 305 }}>
+    <Card sx={{ maxWidth: 345 }}>
       <Link href={`/product/${product._id}`} color="inherit" underline="none">
         <CardMedia
-          sx={{ height: "300px", width: '100%' }}
-          image={`${product.image}`}
-          title={`${product.name}`}
-        />
+          sx={{ height: "200px", display: "flex", justifyContent: "center" }}
+        >
+          <img height="100%" src={`${product.image}`} alt="" />
+        </CardMedia>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {product.name}

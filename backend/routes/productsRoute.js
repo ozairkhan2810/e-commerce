@@ -4,8 +4,7 @@ const products = require("../models/productModel");
 const router = express.Router();
 
 router.get("/products", async (req, res) => {
-    const data = await products.find({});
-    console.log("producst", data);
+  const data = await products.find({});
   res.json(data);
 });
 
