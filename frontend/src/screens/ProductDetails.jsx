@@ -3,28 +3,34 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Link,
   Rating,
   Typography,
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { listProductDetails } from "../actions/productAction";
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
+import { addToCart } from "../actions/cartActions";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.productDetails);
   const { error, loading, product } = data;
 
   const [rating, setRating] = useState(0);
-  
+
+  const addToCartHandler = (id) => {
+    dispatch(addToCart(id));
+    navigate("/cart");
+  };
+
   useEffect(() => {
     dispatch(listProductDetails(id));
     setRating(product.rating);
@@ -94,9 +100,15 @@ const ProductDetails = () => {
                 marginTop: "1rem",
               }}
             >
-              <Button variant="contained" endIcon={<AddShoppingCartIcon />}>
+              {/* <Link style={{textDecoration: 'none'}} to="/cart"> */}
+              <Button
+                onClick={() => addToCartHandler(id)}
+                variant="contained"
+                endIcon={<AddShoppingCartIcon />}
+              >
                 Add to Cart
               </Button>
+              {/* </Link> */}
             </Box>
           </CardContent>
         </Card>
